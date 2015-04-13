@@ -40,12 +40,13 @@ crossvalidate <- function(modelfun, data, iterations=10, sample_ratio=1/nrow(dat
 
 # rpart prediction
 library(rpart)
+controls <- rpart.control(5, 2)
 modelfun <- function(train){
-  train %>% select(-Id,-City) %>% rpart(revenue ~ ., .)
+  train %>% select(-Id,-City) %>% rpart(revenue ~ ., .,  control = controls)
 }
 crossvalidate(modelfun, data)
 
-usedmod <- real_train %>% select(-Id,-City) %>% rpart(revenue ~ ., .)
+usedmod <- real_train %>% select(-Id,-City) %>% rpart(revenue ~ ., ., control=controls)
 
 # Cubist prediction
 library(Cubist)
