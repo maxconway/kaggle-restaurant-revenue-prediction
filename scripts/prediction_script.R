@@ -33,10 +33,11 @@ test <- data %>% filter(!(row_number() %in% assignment))
 
 # rpart prediction
 library(rpart)
-mod <- train %>% select(-Id,-City) %>% rpart(revenue ~ ., .)
+controls <- rpart.control(5, 2)
+mod <- train %>% select(-Id,-City) %>% rpart(revenue ~ ., ., control = controls)
 RMSE(predict(mod, test),test$revenue)
 
-usedmod <- real_train %>% select(-Id,-City) %>% rpart(revenue ~ ., .)
+usedmod <- real_train %>% select(-Id,-City) %>% rpart(revenue ~ ., ., control=controls)
 
 # Cubist prediction
 library(Cubist)
