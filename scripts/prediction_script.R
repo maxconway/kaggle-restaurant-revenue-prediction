@@ -33,14 +33,14 @@ crossvalidate <- function(modelfun, data, iterations=10, sample_ratio=1/nrow(dat
     train <- data %>% filter(!(row_number() %in% assignment))
     test <- data %>% filter((row_number() %in% assignment))
     mod <- modelfun(train)
-    return(RMSE(predict(mod, test),test$revenue))
-  })
+    predict(mod, test)-test$revenue
+  }) %>% as.vector() %>% `^`(2) %>% mean %>% sqrt
 }
 
 
 # rpart prediction
 library(rpart)
-controls <- rpart.control(5, 2)
+controls <- rpart.control(2,5)
 modelfun <- function(train){
   train %>% select(-Id,-City) %>% rpart(revenue ~ ., .,  control = controls)
 }
