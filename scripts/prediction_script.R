@@ -15,7 +15,7 @@ logical2string <- function(logical){
 
 data <- read_csv('data/train.csv')
 
-preprocess <- {. %>%
+preprocess <- function(x){x %>%
                  mutate(`Open Date` = dmy(`Open Date`),
                         month = month(`Open Date`),
                         has_time = logical2string(`Open Date`!=floor_date(`Open Date`,'day')),
